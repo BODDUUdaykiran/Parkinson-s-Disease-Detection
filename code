@@ -1,0 +1,60 @@
+import numpy as np
+import pandas as pd
+from sklearn.modelselectionimporttraintestsplit
+f romsklearn.preprocessingimportStandardScaler
+f romsklearnimportsvm
+f romsklearn.metricsimportaccuracyscore
+loadingthedataf romcsvf iletoaP andasDataF rame
+parkinsonsdata = pd.readcsv(′/content/parkinsons(3).data′)
+printingthef irst5rowsof thedataf rame
+parkinsonsdata.head()
+numberof rowsandcolumnsinthedataf rame
+parkinsonsdata.shape
+gettingmoreinf ormationaboutthedataset
+parkinsonsdata.inf o()
+checkingf ormissingvaluesineachcolumn
+parkinsonsdata.isnull().sum()
+gettingsomestatisticalmeasuresaboutthedata
+parkinsonsdata.describe()
+distributionof targetV ariable
+parkinsonsdata[′status′].valuecounts()
+groupingthedatabas3edonthetargetvariable
+parkinsonsdata.groupby(′status′).mean(numericonly = T rue)
+X = parkinsonsdata.drop(columns = [′name′,′ status′], axis = 1)
+Y = parkinsonsdata[′status′]
+print(X)
+print(Y )
+17
+Xtrain, Xtest, Ytrain, Ytest = traintestsplit(X, Y, testsize = 0.2, randomstate = 2)
+print(X.shape, Xtrain.shape, Xtest.shape)
+scaler = StandardScaler()
+scaler.f it(Xtrain)
+Xtrain = scaler.transf orm(Xtrain)
+Xtest = scaler.transf orm(Xtest)
+print(Xtrain)
+model = svm.SV C(kernel =′ linear′)
+trainingtheSV M modelwithtrainingdata
+model.f it(Xtrain, Ytrain)
+accuracyscoreontrainingdata
+Xtrainprediction = model.predict(Xtrain)
+trainingdataaccuracy = accuracyscore(Ytrain, Xtrainprediction)
+print(′Accuracyscoreof trainingdata :′, trainingdataaccuracy)
+accuracyscoreontrainingdata
+Xtestprediction = model.predict(Xtest)
+testdataaccuracy = accuracyscore(Ytest, Xtestprediction)
+print(′Accuracyscoreof testdata :′, testdataaccuracy)
+inputdata = (197.07600, 206.89600, 192.05500, 0.00289, 0.00001, 0.00166, 0.00168,
+0.00498, 0.01098, 0.09700, 0.00563, 0.00680, 0.00802, 0.01689, 0.00339,
+26.77500, 0.422229, 0.741367, −7.348300, 0.177551, 1.743867, 0.085569)
+changinginputdatatoanumpyarray
+inputdataasnumpyarray = np.asarray(inputdata)
+reshapethenumpyarray
+inputdatar eshaped = inputdataasnumpyarray.reshape(1, −1)
+standardizethedata
+stddata = scaler.transf orm(inputdatar eshaped)
+prediction = model.predict(stddata)
+print(prediction)
+if (prediction[0] == 0) :
+print(”T heP ersondoesnothaveP arkinsonsDisease”)
+else :
+print(”T heP ersonhasP arkinsons”)
